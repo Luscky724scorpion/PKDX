@@ -40,3 +40,19 @@ let gens=
 pokemon.filter((pokemon) => pokemon.fire==="gen1"
 );
 console.log("gens")
+
+
+
+
+
+
+/*getting form elements from dom
+const pokemonPicking = document.getElementsByClassName("type");
+
+//handle display on submit
+pokemonPicking.addEventListner("submit", (event) => {
+  event.preventDefault();
+
+  //data object for getting pokemon
+  let formData = new FormData(pokemonPicking);
+});*/
