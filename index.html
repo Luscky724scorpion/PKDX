@@ -19,46 +19,47 @@
 
     </header>
     <main>
+      <header>
+       
+        <div><H1>Choose Your Starter</H1></div>
+        <div id="results" class="pokemon-grid"></div>
+  
+    </header>
+    <main>
+       
         <section>
-            <ul class="gens-container">
-              
-            </ul>
-        </section>
-        <section>
-          <form id="form">
-            <div>
-              <label for="fname">First name</label>
-              <input type="text" id="fname" name="First name" />
+      
+  
+        <fieldset>
+         
+         
+          
+          <form id="starterForm">
+            <div class="form-group">
+              <label for="typeSelection">Choose Type:</label>
+              <select id="typeSelection">
+                <option value="">Select Type</option>
+                <option value="fire">Fire</option>
+                <option value="water">Water</option>
+                <option value="grass">Grass</option>
+              </select>
             </div>
-      
-            <div>
-              <label for="lname">last name</label>
-              <input type="text" id="lname" name="Last name" />
+            
+            <div class="form-group">
+              <label for="genSelection">Choose Generation:</label>
+              <select id="genSelection">
+                <option value="gen1">Generation 1</option>
+                <option value="gen2">Generation 2</option>
+                <option value="gen3">Generation 3</option>
+              </select>
             </div>
-      
-            <fieldset>
-              <legend>Selct a starter</legend>
-      
-              <div>
-                <input class="type" type="radio" id="fire" name="fire--input" />
-      
-                <label for="fire">Fire</label>
-              </div>
-              <div>
-                <input class="type" type="radio" id="grass" name="grass--input" />
-      
-                <label for="grass">grass</label>
-              </div>
-              <div>
-                <input class="type" type="radio" id="water" name="00waterinput" />
-      
-                <label for="water">water</label>
-              </div>
-            </fieldset>
-            <button type="submit" name="intent" value="save">See my starter</button>
+            
+            <button type="submit">Show Starter</button>
           </form>
-        </section>
-    </div>
+          
+        
+          
+        </fieldset>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

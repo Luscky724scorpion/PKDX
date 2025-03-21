@@ -1,58 +1,104 @@
-let pokemon=[
-  "fire","water","grass"
+const pokedex = document.getElementById("pokedex");
 
-  
+const typeGenerations = {
+  fire: {
+    gen1: "charmander",
+    gen2: "cyndaquil",
+    gen3: "torchic",
+  },
+  water: {
+    gen1: "squirtle",
+    gen2: "totodile",
+    gen3: "mudkip",
+  },
+  grass: {
+    gen1: "bulbasaur",
+    gen2: "chikorita",
+    gen3: "treecko",
+  },
+};
 
-]
+// Global variable to store fetched Pokémon
+let allStarters = [];
 
-let fire=[
-   {gen1:"Charmander",
-    gen3:"Torchick",
-    gen2:"Cyndaquil"
-      
+// Fetch Pokémon data from API
+const fetchPokemon = async () => {
+  const starterIds = [1, 4, 7, 152, 155, 158, 252, 255, 258];
 
-   },
- 
+  try {
+    const responses = await Promise.all(
+      starterIds.map((id) => fetch(`https://pokeapi.co/api/v2/pokemon/${id}`))
+    );
 
-]
-let water=[
-   {  
-    gen1:"Squirtle",
-       gen2:"Totodile",
-       gen3:"Mudkip",
-      
+    const data = await Promise.all(responses.map((res) => res.json()));
 
-   
+    allStarters = data.map((pokemon) => ({
+      name: pokemon.name,
+      id: pokemon.id,
+      image: pokemon.sprites.front_default,
+      type: pokemon.types.find((t) =>
+        ["fire", "water", "grass"].includes(t.type.name)
+      )?.type.name,
+      generation: `gen${Math.floor((pokemon.id - 1) / 151) + 1}`,
+    }));
+
+    displayPokemon(allStarters);
+    initializeForm();
+  } catch (error) {
+    console.error("Error fetching Pokémon:", error);
   }
-]
-let grass=[
-   {  
-      
-        gen1:"Bulbasaur",
-        gen2:"Chikorita",
-       gen3:"Treeko"
+};
 
-   
-  }
-]
+// Form handling
+const initializeForm = () => {
+  const form = document.getElementById("starterForm");
+  const typeSelection = document.getElementById("typeSelection");
+  const genSelection = document.getElementById("genSelection");
 
-let gens=
-pokemon.filter((pokemon) => pokemon.fire==="gen1"
-);
-console.log("gens")
+  // Populate generation options
+  genSelection.innerHTML = Object.keys(typeGenerations.fire)
+    .map((gen) => `<option value="${gen}">${gen.toUpperCase()}</option>`)
+    .join("");
 
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const selectedType = typeSelection.value;
+    const selectedGen = genSelection.value;
 
+    if (!selectedType) {
+      alert("Please select a Pokémon type!");
+      return;
+    }
 
+    const filtered = allStarters.filter(
+      (pokemon) =>
+        pokemon.type === selectedType &&
+        pokemon.name === typeGenerations[selectedType][selectedGen]
+    );
 
+    displayPokemon(filtered);
+  });
+};
 
+// Display function
+const displayPokemon = (pokemon) => {
+  const resultsDiv = document.getElementById("results");
+  resultsDiv.innerHTML =
+    pokemon.length > 0
+      ? pokemon
+          .map(
+            (p) => `
+        <div class="pokemon-card">
+          <img src="${p.image}" alt="${p.name}">
+          <h3>${p.name.charAt(0).toUpperCase() + p.name.slice(1)}</h3>
+          <p>Type: ${p.type}</p>
+          <p>Generation: ${p.generation}</p>
+        </div>
+      `
+          )
+          .join("")
+      : "<p>No Pokémon found for this selection</p>";
+};
 
-/*getting form elements from dom
-const pokemonPicking = document.getElementsByClassName("type");
-
-//handle display on submit
-pokemonPicking.addEventListner("submit", (event) => {
-  event.preventDefault();
-
-  //data object for getting pokemon
-  let formData = new FormData(pokemonPicking);
-});*/
+// Initialize
+fetchPokemon();
